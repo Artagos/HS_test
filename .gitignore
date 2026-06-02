@@ -3,3 +3,12 @@ node_modules
 .env
 
 /generated/prisma
+
+# Build output
+.next
+out
+
+# Test / temp files
+test-backend.ts
+test-backend.mjs
+session-ses_*.md
