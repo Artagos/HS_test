@@ -1,0 +1,59 @@
+# Frontend Execution Progress Log
+
+## Cycle 1: Scaffold & Foundation
+- Installed frontend dependencies (already present in root package.json: zustand, lucide-react, clsx, tailwind-merge).
+- Verified shadcn/ui primitives exist in `src/components/ui/` (Button, Card, Dialog, Input, Badge, Tabs).
+- Confirmed theme tokens in `src/app/globals.css` and `src/components/theme-provider.tsx`.
+- Updated `src/lib/store.ts` to use Zustand for client auth state with hydration from `/api/auth/me`.
+- Updated `src/components/navbar.tsx` to hydrate auth on mount and render role-based navigation.
+
+## Cycle 2: Marketing Homepage
+- Created `src/components/hero.tsx` with CTA modals.
+- Created `src/components/stats-bar.tsx` with key statistics (ICPC Gold, 95% Employability, 50+ Nationalities, 3-week modules).
+- Created `src/components/campuses.tsx` for Barcelona & Bangkok cards.
+- Created `src/components/programs-grid.tsx` linking to program detail pages.
+- Replaced `src/app/page.tsx` with composed marketing homepage.
+
+## Cycle 3: Program Pages + Lead Capture
+- Created `src/app/programs/page.tsx` as the program catalog.
+- Created `src/app/programs/[slug]/page.tsx` with static generation (`generateStaticParams`) and 14-module timeline visual.
+- Created `src/components/apply-modal.tsx` integrated with backend `/api/applications` (fetches program IDs dynamically).
+- Created `src/components/brochure-modal.tsx` integrated with backend `/api/leads`.
+- Created `src/components/program-detail-client.tsx` for modal triggers in the server detail page.
+
+## Cycle 4: Student Dashboard
+- Created `src/app/login/page.tsx` with login/register forms calling `/api/auth/login` and `/api/auth/register`.
+- Created `src/app/dashboard/page.tsx` fetching from `/api/student/dashboard` and displaying:
+  - Current Module view (module number, days remaining, mentor, campus)
+  - Daily Schedule mock
+  - Academic Timeline (14 modules grid with completed/active/upcoming states)
+  - Documents checklist (English cert, transcripts, visa, health insurance)
+
+## Cycle 5: Mock CRM Admin
+- Created `src/app/admin/page.tsx` protected by frontend role guard (`ADMIN`), displaying:
+  - Applications Kanban pipeline (Submitted → Interview Scheduled → Accepted → Enrolled)
+  - Advance actions calling `PATCH /api/applications/[id]`
+  - Leads table calling `GET /api/leads`
+
+## Cycle 6: Mock Email Service
+- Created `src/app/admin/emails/page.tsx` protected by frontend role guard (`ADMIN`), displaying:
+  - Sent emails from `GET /api/mock-emails`
+  - Trigger badges and email body viewer
+
+## Integration
+- Created `src/lib/api.ts` with typed wrappers for all backend endpoints.
+- Frontend uses real backend APIs for auth, programs, applications, leads, dashboard, and emails.
+- Static program metadata (module timelines) enriched from `src/lib/programs.ts`.
+
+## Status
+- All frontend pages and components written.
+- Build verification succeeded (Next.js 16.2.7, TypeScript strict, static generation for program slugs).
+
+## Cycle 7: Docker Setup
+- Created `Dockerfile` with multi-stage build (deps → builder → runner) using Node 20 Alpine.
+- Enabled Next.js `output: 'standalone'` in `next.config.ts` for optimized container image.
+- Created `docker-compose.yml` with healthchecks and environment variable overrides.
+- Created `.dockerignore` to exclude dev artifacts (node_modules, .next, .git, etc.).
+- Added Docker npm scripts: `docker:build`, `docker:up`, `docker:down`, `docker:logs`.
+- Included `dev.db` SQLite database in the production image for zero-config startup.
+- Configured `DATABASE_URL` and `JWT_SECRET` via docker-compose environment variables.

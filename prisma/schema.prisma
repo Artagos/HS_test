@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite does not support native enums; use String with defaults
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      String   @default("STUDENT")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  application Application?
+  studentData StudentData?
+}
+
+model Program {
+  id          String @id @default(uuid())
+  slug        String @unique
+  title       String
+  shortDesc   String
+  description String
+  category    String
+  durationWeeks Int    @default(42)
+  modules     Int    @default(14)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+
+  applications Application[]
+}
+
+model Application {
+  id          String            @id @default(uuid())
+  userId      String            @unique
+  programId   String
+  campus      String
+  status      String            @default("SUBMITTED")
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program Program @relation(fields: [programId], references: [id])
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  email     String
+  firstName String?
+  lastName  String?
+  programId String?
+  campus    String?
+  source    String   @default("homepage")
+  createdAt DateTime @default(now())
+}
+
+model MockEmail {
+  id        String   @id @default(uuid())
+  toAddress String
+  subject   String
+  body      String
+  trigger   String
+  sentAt    DateTime @default(now())
+}
+
+model StudentData {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  currentModule     Int      @default(1)
+  mentorName        String?
+  englishCert       Boolean  @default(false)
+  transcripts       Boolean  @default(false)
+  visaStatus        String   @default("PENDING")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

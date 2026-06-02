@@ -1,0 +1,40 @@
+{
+    "version": "0.1.0",
+    "name": "hs-clone",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint",
+        "docker:build": "docker build -t hs-clone:latest .",
+        "docker:up": "docker-compose up -d",
+        "docker:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f app"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/bcryptjs": "^2.4.6",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.2.7",
+        "tailwindcss": "^4",
+        "typescript": "^5"
+    },
+    "dependencies": {
+        "@prisma/client": "^5.22.0",
+        "bcryptjs": "^3.0.3",
+        "clsx": "^2.1.1",
+        "jsonwebtoken": "^9.0.3",
+        "lucide-react": "^1.17.0",
+        "next": "16.2.7",
+        "prisma": "^5.22.0",
+        "react": "19.2.4",
+        "react-dom": "19.2.4",
+        "tailwind-merge": "^3.6.0",
+        "zustand": "^5.0.14"
+    },
+    "private": true
+}
